@@ -17,5 +17,15 @@ async def ping(ctx):
     await ctx.send('pong')
 
 
+@bot.command()
+async def nyan(ctx):
+    await ctx.send('にゃーん')
+
+
+@bot.command()
+async def takopi(ctx):
+    await ctx.send('わ わかんないっピ')
+
+
 token = getenv('DISCORD_TOKEN')
 bot.run(token)
