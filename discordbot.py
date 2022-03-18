@@ -1,24 +1,21 @@
-import os
-import discord
+from discord.ext import commands
+from os import getenv
+import traceback
 
-TOKEN = os.environ['DISCORD_TOKEN']
+bot = commands.Bot(command_prefix='/')
 
-client = discord.Client()
 
-# 起動時に動作する処理
-@client.event
-async def on_ready():
-    # 起動したらターミナルにログイン通知が表示される
-    print('ログインしました')
+@bot.event
+async def on_command_error(ctx, error):
+    orig_error = getattr(error, "original", error)
+    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+    await ctx.send(error_msg)
 
-# メッセージ受信時に動作する処理
-@client.event
-async def on_message(message):
-    # メッセージ送信者がBotだった場合は無視する
-    if message.author.bot:
-        return
-    if message.content == '/takopi':
-        await message.channel.send('わ わかんないっピ')
 
-# Botの起動とDiscordサーバーへの接続
-client.run(TOKEN)
+@bot.command()
+async def ping(ctx):
+    await ctx.send('pong')
+
+
+token = getenv('DISCORD_TOKEN')
+bot.run(token)
