@@ -1,0 +1,24 @@
+import os
+import discord
+
+TOKEN = os.environ['DISCORD_TOKEN']
+
+client = discord.Client()
+
+# 起動時に動作する処理
+@client.event
+async def on_ready():
+    # 起動したらターミナルにログイン通知が表示される
+    print('ログインしました')
+
+# メッセージ受信時に動作する処理
+@client.event
+async def on_message(message):
+    # メッセージ送信者がBotだった場合は無視する
+    if message.author.bot:
+        return
+    if message.content == '/takopi':
+        await message.channel.send('わ わかんないっピ')
+
+# Botの起動とDiscordサーバーへの接続
+client.run(TOKEN)
